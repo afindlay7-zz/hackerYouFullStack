@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {  Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import axios from "axios";
 
-class Header extends Component {
+class Banner extends Component {
     constructor(){
         super();
         this.state = {
@@ -104,4 +104,4 @@ class Header extends Component {
     }
 }
   
-  export default Header;
+  export default Banner;

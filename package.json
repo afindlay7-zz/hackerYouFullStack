@@ -9,7 +9,9 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "styled-components": "^3.2.3"
   },
   "proxy": "http://localhost:8080/",
   "scripts": {
@@ -17,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "nodemon lib/server.js",
+    "server": "nodemon lib/server.js --ignore src/",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "devDependencies": {
