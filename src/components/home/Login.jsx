@@ -19,7 +19,7 @@ class Login extends Component {
         <Container>
           <Panel>
             <Panel.Heading>
-              <h2>Panel heading with a title</h2>
+              <h2>Welcom back, please login</h2>
             </Panel.Heading>
             <Panel.Body>
                 <form>

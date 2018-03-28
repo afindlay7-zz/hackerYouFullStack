@@ -1,21 +1,54 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 class Header extends Component {
     constructor(){
-        super();
-        this.state = {
-        }
+      super();
+      this.state = {
+        redirectToLogin: false,
+        redirectToSignup: true
+      }
+      this.redirectToLogin = this.redirectToLogin.bind(this);
+      this.redirectToSignup = this.redirectToSignup.bind(this);
     }
 
-    componentDidMount() {
-
+    redirectToLogin() {
+      this.setState({ 
+        redirectToSignup: false,
+        redirectToLogin: true
+      });
     }
+
+    redirectToSignup() {
+      this.setState({ 
+        redirectToLogin: false,
+        redirectToSignup: true
+      });
+    }
+
   
     render() {
       return (
-        <div>
-
-        </div>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="#home">React-Bootstrap</a>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav>
+            <NavItem onClick={this.redirectToLogin}>Login</NavItem>
+            { this.state.redirectToLogin ? 
+              <Redirect to={{pathname: '/login'}} id='redirectToLoginFromHeader' />
+              : null
+            }
+            <NavItem onClick={this.redirectToSignup}>Signup</NavItem>
+            { this.state.redirectToSignup ? 
+              <Redirect to={{pathname: '/signup'}} id='redirectToSignupFromHeader' />
+              : null
+            }
+          </Nav>
+        </Navbar>
       );
     }
 }
