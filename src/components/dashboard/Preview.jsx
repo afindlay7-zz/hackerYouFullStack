@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Panel } from 'react-bootstrap';
 import styled from 'styled-components';
 
 class Preview extends Component {

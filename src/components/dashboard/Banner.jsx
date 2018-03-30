@@ -10,15 +10,12 @@ class Banner extends Component {
             name: '',
             date: '',
             description: '',
-            groups: '',
+            // groups: '',
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    componentDidMount() {
     }
 
     handleClose() {
@@ -35,11 +32,19 @@ class Banner extends Component {
       });
     }
   
-    handleSubmit() {
-      console.log(this.state);
-      axios.post('/photos/' + this.state.name)
+    handleSubmit(e) {
+      e.preventDefault();
+      const { name, date, description } = this.state;
+      axios.post('/photos', {
+          name,
+          date,
+          description
+        })
         .then(res => {
           console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
 

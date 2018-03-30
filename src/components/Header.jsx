@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 class Header extends Component {
     constructor(){
       super();
       this.state = {
         redirectToLogin: false,
-        redirectToSignup: true
+        redirectToSignup: false
       }
       this.redirectToLogin = this.redirectToLogin.bind(this);
       this.redirectToSignup = this.redirectToSignup.bind(this);

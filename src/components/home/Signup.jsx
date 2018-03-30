@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Panel, Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import axios from "axios";
+import { Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+// import axios from "axios";
 import styled from 'styled-components';
 
-class Login extends Component {
+class Signup extends Component {
     constructor(){
         super();
         this.state = {
@@ -16,7 +16,7 @@ class Login extends Component {
   
     render() {
       return (
-        <Container>
+        <SignupContainer>
           <Panel>
             <Panel.Heading>
               <h2>Sign up to photo share!</h2>
@@ -53,14 +53,14 @@ class Login extends Component {
             </Panel.Footer>
           </Panel>
 
-        </Container>
+        </SignupContainer>
       );
     }
 }
   
-  export default Login;
+  export default Signup;
 
-  const Container = styled.div`
-    display: flex;
-    justify-content: space-between;
+  const SignupContainer = styled.div`
+    width: 500px;
+    margin: 0 auto;
   `

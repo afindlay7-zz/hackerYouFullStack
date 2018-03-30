@@ -5,17 +5,31 @@ import axios from "axios";
 import styled from 'styled-components';
 
 class Info extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
           show: false,
           name: '',
           date: '',
-          description: '',
+          description: ''
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    componentWillReceiveProps(propsReceived){
+      axios.get(`/photos/${propsReceived.id}`)
+        .then(res => {
+          this.setState({
+            name: res.data.payload[0].name,
+            date: res.data.payload[0].date,
+            description: res.data.payload[0].description
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
 
     handleClose() {
@@ -72,9 +86,9 @@ class Info extends Component {
     }
 }
   
-  export default Info;
+export default Info;
 
-  const Container = styled.div`
-    display: flex;
-    justify-content: space-between;
-  `
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

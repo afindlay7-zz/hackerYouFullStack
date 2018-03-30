@@ -6,8 +6,6 @@ import Login from './components/home/Login';
 import Signup from './components/home/Signup';
 import Dashboard from './components/dashboard/Dashboard';
 import Footer from './components/Footer'
-import styled from 'styled-components';
-
 
 class App extends Component {
   render() {
@@ -30,10 +28,3 @@ class App extends Component {
 
 export default App;
 
-const Container = styled.div`
-  padding: 40px;
-`
-
-const Body = styled.div`
-  padding: 30px;
-`

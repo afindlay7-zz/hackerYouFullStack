@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Panel, Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import axios from "axios";
+import { Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+// import axios from "axios";
 import styled from 'styled-components';
 
 class Login extends Component {
@@ -16,7 +16,7 @@ class Login extends Component {
   
     render() {
       return (
-        <Container>
+        <LoginContainer>
           <Panel>
             <Panel.Heading>
               <h2>Welcom back, please login</h2>
@@ -41,14 +41,14 @@ class Login extends Component {
             </Panel.Footer>
           </Panel>
 
-        </Container>
+        </LoginContainer>
       );
     }
 }
   
   export default Login;
 
-  const Container = styled.div`
-    display: flex;
-    justify-content: space-between;
+  const LoginContainer = styled.div`
+    width: 500px;
+    margin: 0 auto;
   `
