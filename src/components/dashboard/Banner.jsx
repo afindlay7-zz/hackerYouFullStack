@@ -1,112 +1,157 @@
 import React, { Component } from "react";
-import {  Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import {  Button, Modal, Form, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
 import axios from "axios";
+import styled from 'styled-components';
 
 class Banner extends Component {
-    constructor(){
-        super();
-        this.state = {
-            show: false,
-            name: '',
-            date: '',
-            description: '',
-            // groups: '',
-        }
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+  constructor(props){
+    super(props);
+    this.state = {
+      show: false,
+      name: '',
+      date: '',
+      description: '',
+      url: ''
     }
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    handleClose() {
-      this.setState({ show: false });
-    }
+  handleClose() {
+    this.setState({ show: false });
+  }
   
-    handleShow() {
-      this.setState({ show: true });
-    }
+  handleShow() {
+    this.setState({ show: true });
+  }
 
-    handleChange(e) {
-      this.setState({
-        [e.target.name]: e.target.value
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
+    const { name, date, description, url } = this.state;
+    axios.post('/photos', {
+        name,
+        date,
+        description,
+        url
+      })
+      .then(res => {
+        console.log(res.data.payload);
+      })
+      .catch(err => {
+        console.log(err);
       });
-    }
-  
-    handleSubmit(e) {
-      e.preventDefault();
-      const { name, date, description } = this.state;
-      axios.post('/photos', {
-          name,
-          date,
-          description
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    this.props.refresh();
+    this.handleClose();
+  }
 
-    render() {
-      return (
-        <div>
-          <Button bsStyle="primary" onClick={this.handleShow}>Add Photo</Button>
+  render() {
+    return (
+      <BannerContainer>
+        <Button bsStyle="primary" onClick={this.handleShow}>Add Photo</Button>
 
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <form>
-              <Modal.Header closeButton>
-                <Modal.Title>Photo Information</Modal.Title>
-              </Modal.Header>
-              
-              <Modal.Body>
-                <FormGroup controlId="formControlsText">
-                  <ControlLabel>Name</ControlLabel>
-                  <FormControl placeholder="Enter photo name" type="text" name="name" 
-                    onChange={this.handleChange}></FormControl>
-                </FormGroup>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <form>
+            <Modal.Header closeButton>
+              <Modal.Title>Photo Information</Modal.Title>
+            </Modal.Header>
+            
+            <Modal.Body>
+              <FormGroup controlId="formControlsText">
+                <ControlLabel>Name</ControlLabel>
+                <FormControl 
+                  placeholder="Enter photo name" 
+                  type="text" 
+                  name="name" 
+                  onChange={this.handleChange}>
+                </FormControl>
+              </FormGroup>
 
-                <FormGroup controlId="formControlsText">
-                  <ControlLabel>Date</ControlLabel>
-                  <FormControl placeholder="Date photo was taken" type="text" name="date" 
-                    onChange={this.handleChange}></FormControl>
-                </FormGroup>
+              <FormGroup controlId="formControlsText">
+                <ControlLabel>Date</ControlLabel>
+                <FormControl 
+                  placeholder="Date photo was taken" 
+                  type="text" 
+                  name="date" 
+                  onChange={this.handleChange}>
+                </FormControl>
+              </FormGroup>
 
-                <FormGroup controlId="formControlsTextarea">
-                  <ControlLabel>Description</ControlLabel>
-                  <FormControl componentClass="textarea" placeholder="Enter a description of your photo" name="description" 
-                    onChange={this.handleChange}></FormControl>
-                </FormGroup>
+              <FormGroup controlId="formControlsTextarea">
+                <ControlLabel>Description</ControlLabel>
+                <FormControl 
+                  componentClass="textarea" 
+                  placeholder="Enter a description of your photo" 
+                  name="description" 
+                  onChange={this.handleChange}>
+                </FormControl>
+              </FormGroup>
 
-                <FormGroup controlId="formControlsSelectMultiple">
-                  <ControlLabel>Groups</ControlLabel>
-                  <FormControl componentClass="select" multiple>
-                    <option value="select">G1</option>
-                    <option value="other">G2</option>
-                    <option value="other">G3</option>
-                  </FormControl>
-                </FormGroup>
+              <FormGroup controlId="formControlsSelectMultiple">
+                <ControlLabel>Groups</ControlLabel>
+                <FormControl componentClass="select" multiple>
+                  <option value="select">G1</option>
+                  <option value="other">G2</option>
+                  <option value="other">G3</option>
+                </FormControl>
+              </FormGroup>
 
-                <FormGroup controlId="formControlsText">
-                  <ControlLabel>URL</ControlLabel>
-                  <FormControl placeholder="Enter photo url" type="text"></FormControl>
-                </FormGroup>
+              <FormGroup>
+                <Radio name="radioGroup" inline>
+                  <FormGroup controlId="formControlsText">
+                    <ControlLabel>URL</ControlLabel>
+                    <FormControl 
+                      placeholder="Enter photo url" 
+                      type="text"
+                      name="url" 
+                      onChange={this.handleChange}>
+                    </FormControl>
+                  </FormGroup>
+                </Radio>
 
-                <FormGroup controlId="formControlsFile">
-                  <ControlLabel>File</ControlLabel>
-                  <FormControl help="Example block-level help text here." type="file"></FormControl>
-                </FormGroup>
-              </Modal.Body>
+                <Radio name="radioGroup" inline>
+                  <FormGroup controlId="formControlsFile">
+                    <ControlLabel>File</ControlLabel>
+                    <FormControl 
+                      type="file">
+                    </FormControl>
+                  </FormGroup>
+                </Radio>
+              </FormGroup>
+            </Modal.Body>
 
-              <Modal.Footer>
-                <Button onClick={this.handleSubmit}>Submit</Button>
-                <Button onClick={this.handleClose}>Close</Button>
-              </Modal.Footer>
-            </form>
-          </Modal>
-        </div>
-      );
-    }
+            <Modal.Footer>
+              <Button bsStyle="primary" onClick={this.handleSubmit}>Add Photo</Button>
+              <Button onClick={this.handleClose}>Close</Button>
+            </Modal.Footer>
+          </form>
+        </Modal>
+
+        <Form inline>
+          <FormGroup controlId="formControlsText">
+            <FormControl placeholder="Photo name" type="text" name="name" 
+              onChange={this.handleChange}></FormControl>
+            </FormGroup>{' '}
+          <Button type="submit">Search</Button>
+        </Form>
+
+      </BannerContainer>
+    );
+  }
 }
   
-  export default Banner;
+export default Banner;
+
+const BannerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+`

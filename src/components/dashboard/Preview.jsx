@@ -2,29 +2,34 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 
 class Preview extends Component {
-    constructor(){
-        super();
-        this.state = {
-        }
+  constructor(props){
+    super(props);
+    this.state = {
+      url: ''
     }
+  }
 
-    componentDidMount() {
+  componentWillReceiveProps(propsReceived){
+    console.log(propsReceived.url);
+    this.setState({ url: propsReceived.url});
 
-    }
-  
-    render() {
-      return (
-        <Container>
+  }
 
-        </Container>
-      );
-    }
+  render() {
+    return (
+      <PreviewContainer>
+        <img src={this.state.url} alt="Mountain View"></img>
+      </PreviewContainer>
+    );
+  }
 }
   
-  export default Preview;
+export default Preview;
 
-  const Container = styled.div`
-  width: 400px;
-  height: 400px;
+const PreviewContainer = styled.div`
+  img {
+    max-width: 500px;
+    height: auto
+  }
   background-color: pink;
-  `
+`

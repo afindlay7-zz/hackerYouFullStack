@@ -1,19 +1,35 @@
 import React, { Component } from "react";
+import { Panel, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Info from './Info';
 import axios from "axios";
 import styled from 'styled-components';
 
 class Tree extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       photos: [],
-      idOfPhotoToDisplay: 'parent'
+      idOfPhotoToDisplay: ''
     }
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentWillReceiveProps(propsPreceived) {
+    if (propsPreceived.refresh){
+      this.handleRefresh();
+    }
+  }
+
   componentDidMount() {
+    this.handleRefresh();
+  }
+
+  handleClick(id) {
+    this.setState({ idOfPhotoToDisplay: id });
+  }
+
+  handleRefresh(){
     axios.get("/photos")
       .then(res => {
         if(res.data.payload){
@@ -26,30 +42,27 @@ class Tree extends Component {
       .catch(err => {
         console.log(err);
       });
-    
-  }
-
-  handleClick(id) {
-    this.setState({
-      idOfPhotoToDisplay: id
-    })
   }
   
   render() {
     return (
       <TreeContainer>
-        <div className="tree">
-          <ul>
+        <Panel>
+          <Panel.Heading>Panel heading</Panel.Heading>
+          <ListGroup>
             { this.state.photos.map((photo, i) => (
-              <li 
-                onClick={() => this.handleClick(photo._id)} 
-                key={i}>{photo.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+                <ListGroupItem
+                  onClick={() => this.handleClick(photo._id)} 
+                  key={i}>{photo.name}
+                </ListGroupItem>
+              ))}
+          </ListGroup>
+        </Panel>
 
-        <Info id={this.state.idOfPhotoToDisplay}/>
+        <Info   
+          id={this.state.idOfPhotoToDisplay}
+          refresh={this.handleRefresh}/>
+
       </TreeContainer>
     );
   }
@@ -60,4 +73,5 @@ export default Tree;
 const TreeContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 15px;
 `

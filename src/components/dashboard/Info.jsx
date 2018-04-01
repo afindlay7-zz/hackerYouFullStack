@@ -11,7 +11,10 @@ class Info extends Component {
           show: false,
           name: '',
           date: '',
-          description: ''
+          description: '',
+          url: '',
+          file: false,
+          photoId: ''
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -19,12 +22,14 @@ class Info extends Component {
     }
 
     componentWillReceiveProps(propsReceived){
+      this.setState({ photoId: propsReceived.id});
       axios.get(`/photos/${propsReceived.id}`)
         .then(res => {
           this.setState({
             name: res.data.payload[0].name,
             date: res.data.payload[0].date,
-            description: res.data.payload[0].description
+            description: res.data.payload[0].description,
+            url: res.data.payload[0].url
           });
         })
         .catch(err => {
@@ -41,6 +46,14 @@ class Info extends Component {
     }
 
     handleDelete() {
+      axios.delete(`/photos/${this.state.photoId}`)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this.props.refresh();
       this.handleClose();
     }
   
@@ -80,7 +93,11 @@ class Info extends Component {
             </Panel.Footer>
           </Panel>
 
-          <Preview />
+          { this.state.url ? 
+            <Preview url={this.state.url}/> :
+            <Preview />
+            }
+          
         </Container>
       );
     }

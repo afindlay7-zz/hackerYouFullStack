@@ -1,27 +1,28 @@
 import React, { Component } from "react";
 import Banner from './Banner';
 import Tree from './Tree';
-// import axios from "axios";
 // import styled from 'styled-components';
 
 class Dashboard extends Component {
     constructor(){
         super();
         this.state = {
+          onRefresh: false
         }
+        this.handleRefresh = this.handleRefresh.bind(this);
     }
 
-    componentDidMount() {
-      // axios.get("/photos").then(res => {
-      //   console.log(res.data);
-      // });
+    handleRefresh() {
+      this.setState({ onRefresh: true });
     }
   
     render() {
       return (
         <div>
-          <Banner />
-          <Tree />
+          <Banner 
+            refresh={this.handleRefresh}/>
+          <Tree 
+            refresh={this.state.onRefresh}/>
         </div>
       );
     }
