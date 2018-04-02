@@ -59,8 +59,8 @@ class Info extends Component {
   
     render() {
       return (
-        <Container>
-          <Panel>
+        <InfoContainer>
+          <Panel id='info-panel'>
             <Panel.Heading>
               <h2>Panel heading with a title</h2>
             </Panel.Heading>
@@ -94,18 +94,26 @@ class Info extends Component {
           </Panel>
 
           { this.state.url ? 
-            <Preview url={this.state.url}/> :
-            <Preview />
+            <Preview url={this.state.url} alt={this.state.name} num="first"/> :
+            <Preview num="second"/>
             }
           
-        </Container>
+        </InfoContainer>
       );
     }
 }
   
 export default Info;
 
-const Container = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 0 0 0 15px;
+  #info-panel {
+    margin: 0;
+  }
+
+  @media(max-width: 1224px){
+    display: block;
+  }
 `

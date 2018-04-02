@@ -5,20 +5,24 @@ class Preview extends Component {
   constructor(props){
     super(props);
     this.state = {
-      url: ''
+      url: '',
+      alt: '',
     }
   }
 
   componentWillReceiveProps(propsReceived){
-    console.log(propsReceived.url);
-    this.setState({ url: propsReceived.url});
+    console.log(propsReceived);
+    this.setState({ 
+      url: propsReceived.url,
+      alt: propsReceived.alt
+    });
 
   }
 
   render() {
     return (
       <PreviewContainer>
-        <img src={this.state.url} alt="Mountain View"></img>
+        <img src={this.state.url} alt={this.state.alt}></img>
       </PreviewContainer>
     );
   }
@@ -27,9 +31,15 @@ class Preview extends Component {
 export default Preview;
 
 const PreviewContainer = styled.div`
+  padding: 0 0 0 15px;
   img {
     max-width: 500px;
-    height: auto
+    height: auto;
+    border: 2px solid #DDDDDD;
+    border-radius: 4px;
   }
-  background-color: pink;
+
+  @media(max-width: 1224px){
+    padding: 15px 0 0 0;
+  }
 `

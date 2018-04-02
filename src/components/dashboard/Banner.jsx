@@ -35,7 +35,6 @@ class Banner extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     const { name, date, description, url } = this.state;
     axios.post('/photos', {
         name,
@@ -59,7 +58,7 @@ class Banner extends Component {
         <Button bsStyle="primary" onClick={this.handleShow}>Add Photo</Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
-          <form>
+          <Form>
             <Modal.Header closeButton>
               <Modal.Title>Photo Information</Modal.Title>
             </Modal.Header>
@@ -132,14 +131,17 @@ class Banner extends Component {
               <Button bsStyle="primary" onClick={this.handleSubmit}>Add Photo</Button>
               <Button onClick={this.handleClose}>Close</Button>
             </Modal.Footer>
-          </form>
+          </Form>
         </Modal>
 
         <Form inline>
           <FormGroup controlId="formControlsText">
-            <FormControl placeholder="Photo name" type="text" name="name" 
-              onChange={this.handleChange}></FormControl>
-            </FormGroup>{' '}
+            <FormControl 
+              placeholder="Photo name" 
+              type="text" name="name" 
+              onChange={this.handleChange}>
+            </FormControl>
+          </FormGroup>{' '}
           <Button type="submit">Search</Button>
         </Form>
 
