@@ -11,7 +11,6 @@ class Preview extends Component {
   }
 
   componentWillReceiveProps(propsReceived){
-    console.log(propsReceived);
     this.setState({ 
       url: propsReceived.url,
       alt: propsReceived.alt

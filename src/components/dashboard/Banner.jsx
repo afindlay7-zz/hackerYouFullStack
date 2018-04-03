@@ -11,12 +11,14 @@ class Banner extends Component {
       name: '',
       date: '',
       description: '',
-      url: ''
+      url: '',
+      file: ''
     }
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
   handleClose() {
@@ -31,6 +33,16 @@ class Banner extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  handleFileUpload() {
+    console.log(document.getElementsByName('file'));
+    console.log(document.getElementsByName('file')[0].value);
+    console.log(document.getElementsByName('file')[0].files[0]);
+    this.setState({
+      file: document.getElementsByName('file')[0].files[0]
+    });
+    
   }
 
   handleSubmit(e) {
@@ -120,7 +132,9 @@ class Banner extends Component {
                   <FormGroup controlId="formControlsFile">
                     <ControlLabel>File</ControlLabel>
                     <FormControl 
-                      type="file">
+                      type="file"
+                      name="file"
+                      onChange={this.handleFileUpload}>
                     </FormControl>
                   </FormGroup>
                 </Radio>
