@@ -30,9 +30,13 @@ class Info extends Component {
     }
 
     componentWillReceiveProps(propsReceived){
+      console.log('info propsReceived:');
+      console.log(propsReceived);
+
       this.setState({ photoId: propsReceived.id});
       axios.get(`/photos/${propsReceived.id}`)
         .then(res => {
+          console.log(res.data);
           this.setState({
             name: res.data.payload[0].name,
             date: res.data.payload[0].date,
@@ -67,20 +71,20 @@ class Info extends Component {
     }
 
     handleEdit(e) {
-      const { updatedName, updatedDate, updatedDescription, updatedUrl, photoId } = this.state;
-      let name, date, description, url;
-      if (updatedName != null){
+      let { name, updatedName, date, updatedDate, description, updatedDescription, url, updatedUrl, photoId } = this.state;   
+      if (updatedName !== ''){
         name =  updatedName;
       }
-      if (updatedDate != null){
+      if (updatedDate !== ''){
         date = updatedDate 
       }
-      if (updatedDescription != null){
+      if (updatedDescription){
         description = updatedDescription;
       }
-      if (updatedUrl != null){
+      if (updatedUrl !== null){
         url =  updatedUrl;
       }
+
       axios.put('/photos', {
           name,
           date,
@@ -94,14 +98,14 @@ class Info extends Component {
         .catch(err => {
           console.log(err);
         });
-      this.props.refresh();
+      this.props.refresh(photoId);
       this.handleClose();
     }
 
     handleDelete() {
       axios.delete(`/photos/${this.state.photoId}`)
         .then(res => {
-          console.log(res);
+          console.log(res.data.payload);
         })
         .catch(err => {
           console.log(err);

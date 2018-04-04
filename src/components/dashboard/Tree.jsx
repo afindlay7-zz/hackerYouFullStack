@@ -15,9 +15,9 @@ class Tree extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillReceiveProps(propsPreceived) {
-    if (propsPreceived.refresh){
-      this.handleRefresh();
+  componentWillReceiveProps(propsReceived) {
+    if (propsReceived.refresh){
+      this.handleRefresh(propsReceived.idOfPhotoToFeature);
     }
   }
 
@@ -29,14 +29,17 @@ class Tree extends Component {
     this.setState({ idOfPhotoToDisplay: id });
   }
 
-  handleRefresh(){
+  handleRefresh(id){
     axios.get("/photos")
       .then(res => {
         if(res.data.payload){
-          this.setState({
-            photos: res.data.payload,
-            idOfPhotoToDisplay: res.data.payload[0]._id
-          });
+          this.setState({ photos: res.data.payload });
+          if (id === undefined){
+            this.setState({ idOfPhotoToDisplay: res.data.payload[0]._id });
+          } else {
+            this.setState({ idOfPhotoToDisplay: id});
+          }
+          
         }
       })
       .catch(err => {
@@ -58,11 +61,10 @@ class Tree extends Component {
               ))}
           </ListGroup>
         </Panel>
-
+        
         <Info   
           id={this.state.idOfPhotoToDisplay}
           refresh={this.handleRefresh}/>
-
       </TreeContainer>
     );
   }

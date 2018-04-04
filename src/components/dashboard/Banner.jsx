@@ -12,7 +12,7 @@ class Banner extends Component {
       date: '',
       description: '',
       url: '',
-      file: ''
+      file: '',
     }
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -56,11 +56,11 @@ class Banner extends Component {
       })
       .then(res => {
         console.log(res.data.payload);
+        this.props.refresh(res.data.payload._id);
       })
       .catch(err => {
         console.log(err);
       });
-    this.props.refresh();
     this.handleClose();
   }
 

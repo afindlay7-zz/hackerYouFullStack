@@ -7,13 +7,17 @@ class Dashboard extends Component {
   constructor(){
     super();
     this.state = {
-      onRefresh: false
+      onRefresh: false,
+      idOfNewPhoto: ''
     }
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
-  handleRefresh() {
-    this.setState({ onRefresh: true });
+  handleRefresh(idOfPhotoAdded) {
+    this.setState({ 
+      onRefresh: true,
+      idOfNewPhoto: idOfPhotoAdded
+    });
   }
 
   render() {
@@ -22,7 +26,9 @@ class Dashboard extends Component {
         <Banner 
           refresh={this.handleRefresh}/>
         <Tree 
-          refresh={this.state.onRefresh}/>
+          refresh={this.state.onRefresh}
+          idOfPhotoToFeature={this.state.idOfNewPhoto}
+          />
       </div>
     );
   }
