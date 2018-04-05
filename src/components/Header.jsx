@@ -59,8 +59,4 @@ class Header extends Component {
 export default Header;
 
 const HeaderContainer = styled.div`
-  #navbar {
-    /* display: flex;
-    justify-content: space-between; */
-  }
 `

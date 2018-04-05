@@ -40,26 +40,28 @@ class Banner extends Component {
     console.log(document.getElementsByName('file')[0].value);
     console.log(document.getElementsByName('file')[0].files[0]);
     this.setState({
-      file: document.getElementsByName('file')[0].files[0]
+      // file: document.getElementsByName('file')[0].files[0]
+      file: document.getElementsByName('file')[0].value
     });
     
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { name, date, description, url } = this.state;
+    const { name, date, description, url, file} = this.state;
     axios.post('/photos', {
         name,
         date,
         description,
-        url
+        url,
+        file
       })
       .then(res => {
         console.log(res.data.payload);
         this.props.refresh(res.data.payload._id);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response);
       });
     this.handleClose();
   }
@@ -169,5 +171,5 @@ export default Banner;
 const BannerContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  padding: 10px 30px 0 30px;
 `

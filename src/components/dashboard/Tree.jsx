@@ -51,7 +51,7 @@ class Tree extends Component {
     return (
       <TreeContainer>
         <Panel id='tree-panel'>
-          <Panel.Heading>Panel heading</Panel.Heading>
+          <Panel.Heading>My Photos</Panel.Heading>
           <ListGroup>
             { this.state.photos.map((photo, i) => (
                 <ListGroupItem
@@ -74,9 +74,12 @@ export default Tree;
 
 const TreeContainer = styled.div`
   display: flex;
-  padding: 15px;
+  padding: 30px;
   #tree-panel{
     min-width: 200px;
     height: 100%;
+  }
+  #tree-panel--heading{
+    font-weight: bold;
   }
 `

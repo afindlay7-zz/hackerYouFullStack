@@ -30,13 +30,9 @@ class Info extends Component {
     }
 
     componentWillReceiveProps(propsReceived){
-      console.log('info propsReceived:');
-      console.log(propsReceived);
-
       this.setState({ photoId: propsReceived.id});
       axios.get(`/photos/${propsReceived.id}`)
         .then(res => {
-          console.log(res.data);
           this.setState({
             name: res.data.payload[0].name,
             date: res.data.payload[0].date,
@@ -45,7 +41,7 @@ class Info extends Component {
           });
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.response);
         });
     }
 
@@ -119,17 +115,19 @@ class Info extends Component {
         <InfoContainer>
           <Panel id='info-panel'>
             <Panel.Heading>
-              <h2>Panel heading with a title</h2>
+              <h2>{this.state.name}</h2>
             </Panel.Heading>
 
             <Panel.Body>
-              <h3>Name:</h3>
-              <p>{this.state.name}</p>
               <h3>Date:</h3>
               <p>{this.state.date}</p>
               <h3>Description:</h3>
               <p>{this.state.description}</p>
               <h3>Groups:</h3>
+              { this.state.url ? 
+                <Preview url={this.state.url} alt={this.state.name} num="first"/> :
+                <Preview num="second"/>
+                }
             </Panel.Body>
 
             <Panel.Footer id="info-panel-footer">
@@ -146,7 +144,7 @@ class Info extends Component {
                     <FormGroup controlId="formControlsText">
                       <ControlLabel>Name</ControlLabel>
                       <FormControl 
-                        placeholder={this.state.name}
+                        defaultValue={this.state.name}
                         type="text" 
                         name="updatedName" 
                         onChange={this.handleChange}>
@@ -156,7 +154,7 @@ class Info extends Component {
                     <FormGroup controlId="formControlsText">
                       <ControlLabel>Date</ControlLabel>
                       <FormControl 
-                        placeholder={this.state.date}
+                        defaultValue={this.state.date}
                         type="text" 
                         name="updatedDate" 
                         onChange={this.handleChange}>
@@ -167,7 +165,7 @@ class Info extends Component {
                       <ControlLabel>Description</ControlLabel>
                       <FormControl 
                         componentClass="textarea" 
-                        placeholder={this.state.description}
+                        defaultValue={this.state.description}
                         name="updatedDescription" 
                         onChange={this.handleChange}>
                       </FormControl>
@@ -187,7 +185,7 @@ class Info extends Component {
                         <FormGroup controlId="formControlsText">
                           <ControlLabel>URL</ControlLabel>
                           <FormControl 
-                            placeholder="Enter photo url" 
+                            placeholder={this.state.url}
                             type="text"
                             name="updatedUrl" 
                             onChange={this.handleChange}>
@@ -231,12 +229,6 @@ class Info extends Component {
               </Modal>
             </Panel.Footer>
           </Panel>
-
-          { this.state.url ? 
-            <Preview url={this.state.url} alt={this.state.name} num="first"/> :
-            <Preview num="second"/>
-            }
-          
         </InfoContainer>
       );
     }
@@ -245,6 +237,7 @@ class Info extends Component {
 export default Info;
 
 const InfoContainer = styled.div`
+  min-width: 500px;
   display: flex;
   justify-content: space-between;
   padding: 0 0 0 15px;
