@@ -30,15 +30,10 @@ class Preview extends Component {
 export default Preview;
 
 const PreviewContainer = styled.div`
-  padding: 0 0 0 15px;
   img {
     max-width: 500px;
     height: auto;
     border: 2px solid #DDDDDD;
     border-radius: 4px;
-  }
-
-  @media(max-width: 1224px){
-    padding: 15px 0 0 0;
   }
 `
