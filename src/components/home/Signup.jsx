@@ -27,7 +27,7 @@ class Signup extends Component {
   handleSubmit(){
     // TODO: Front-end validation
     const { firstName, lastName, email, password } = this.state;
-    axios.post('/signup', {
+    axios.post('/auth/signup', {
       firstName,
       lastName,
       email,

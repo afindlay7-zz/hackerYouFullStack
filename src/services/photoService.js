@@ -3,7 +3,7 @@ import { getHeader, isResponseSuccessful } from '../utils/helpers';
 
 export function axiosAddPhoto(newPhoto, authToken, callback){
     const options = getHeader(authToken);
-    axios.post('/photos', {
+    axios.post('/photo/photos', {
             name: newPhoto.name,
             date: newPhoto.date,
             description: newPhoto.description,
@@ -23,7 +23,7 @@ export function axiosAddPhoto(newPhoto, authToken, callback){
 
 export function axiosGetAllPhotos(authToken, callback){
     const options = getHeader(authToken);
-    axios.get('/photos', options)
+    axios.get('/photo/photos', options)
       .then(res => {
         if(isResponseSuccessful(res.status)){
             console.log(res.data.payload);
@@ -37,7 +37,7 @@ export function axiosGetAllPhotos(authToken, callback){
 
 export function axiosGetPhotoById(id, authToken, callback){
     const options = getHeader(authToken);
-    axios.get('/photos/' + id, options)
+    axios.get('/photo/photos/' + id, options)
         .then(res => {
             if(isResponseSuccessful(res.status)){
                 console.log(res.data.payload[0]);
@@ -52,7 +52,7 @@ export function axiosGetPhotoById(id, authToken, callback){
 export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
     const options = getHeader(authToken);
 
-    axios.put('/photos/' + id, {
+    axios.put('/photo/photos/' + id, {
             name: updatedPhoto.name,
             date: updatedPhoto.date,
             description: updatedPhoto.description,
@@ -68,7 +68,7 @@ export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
 
 export function axiosDeletePhotoById(id, authToken){
     const options = getHeader(authToken);
-    axios.delete('/photos/' + id, options)
+    axios.delete('/photo/photos/' + id, options)
         .then(res => {
             if(isResponseSuccessful(res.status)){
                 console.log(res.data.payload);
