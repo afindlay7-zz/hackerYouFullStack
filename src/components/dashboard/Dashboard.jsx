@@ -4,13 +4,20 @@ import Tree from './Tree';
 // import styled from 'styled-components';
 
 class Dashboard extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
+      accessToken: '',
       onRefresh: false,
       idOfNewPhoto: ''
     }
     this.handleRefresh = this.handleRefresh.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location.state){
+      this.setState({ accessToken: this.props.location.state.accessToken });
+    }
   }
 
   handleRefresh(idOfPhotoAdded) {
@@ -24,10 +31,12 @@ class Dashboard extends Component {
     return (
       <div>
         <Banner 
-          refresh={this.handleRefresh}/>
+          refresh={this.handleRefresh}
+          accessToken={this.state.accessToken}/>
         <Tree 
           refresh={this.state.onRefresh}
           idOfPhotoToFeature={this.state.idOfNewPhoto}
+          accessToken={this.state.accessToken}
           />
       </div>
     );

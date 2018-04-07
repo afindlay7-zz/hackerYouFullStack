@@ -33,8 +33,9 @@ class Login extends Component {
         .then(res => {
           this.setState({ 
             accessToken: res.data.payload,
-            redirectToDashboard: true 
+            // redirectToDashboard: true 
           }, () => {
+
             const options = {
               headers: {
                 Authorization: 'Bearer ' + this.state.accessToken
@@ -47,6 +48,7 @@ class Login extends Component {
               .catch(err => {
                 console.log(err.response);
               });
+
           });
         })
         .catch(err => {
@@ -83,8 +85,11 @@ class Login extends Component {
             </Panel.Footer>
           </Panel>
 
-          { this.state.redirectToDashboard ? 
-            <Redirect to={{pathname: '/dashboard'}} id='redirectToDashboardFromLogin' />
+          { this.state.accessToken ? 
+            <Redirect 
+              to={{pathname: '/dashboard',
+              state: {accessToken: this.state.accessToken}}}
+              id='redirectToDashboardFromLogin' />
             : null
           }
         </LoginContainer>
@@ -97,4 +102,11 @@ class Login extends Component {
   const LoginContainer = styled.div`
     width: 500px;
     margin: 0 auto;
+    .panel-footer {
+      display: flex;
+      justify-content: center;
+    }
+    .btn-primary{
+      width: 30%;
+    }
   `

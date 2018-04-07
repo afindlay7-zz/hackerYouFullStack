@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import Preview from './Preview';
 import { Panel, Button, Modal, Form, FormGroup, FormControl, ControlLabel, Radio } from 'react-bootstrap';
-import axios from "axios";
+import { axiosGetPhotoById, axiosUpdatePhotoById, axiosDeletePhotoById } from '../../services/photoService';
 import styled from 'styled-components';
+import { checkIfUpdated } from '../../utils/helpers';
+import Preview from './Preview';
 
 class Info extends Component {
     constructor(props){
         super(props);
         this.state = {
+          accessToken: '',
           showEditModal: false,
           showDeleteModal: false,
           name: '',
@@ -30,19 +32,21 @@ class Info extends Component {
     }
 
     componentWillReceiveProps(propsReceived){
-      this.setState({ photoId: propsReceived.id});
-      axios.get(`/photos/${propsReceived.id}`)
-        .then(res => {
-          this.setState({
-            name: res.data.payload[0].name,
-            date: res.data.payload[0].date,
-            description: res.data.payload[0].description,
-            url: res.data.payload[0].url
+      if(propsReceived.accessToken && propsReceived.id){
+        this.setState({ 
+          accessToken: propsReceived.accessToken,
+          photoId: propsReceived.id
+        }, () => {
+          axiosGetPhotoById(propsReceived.id, this.state.accessToken, (res) => {
+            this.setState({
+              name: res.name,
+              date: res.date,
+              description: res.description,
+              url: res.url
+            });
           });
-        })
-        .catch(err => {
-          console.log(err.response);
         });
+      }
     }
 
     handleShowEditModal() {
@@ -67,45 +71,20 @@ class Info extends Component {
     }
 
     handleEdit(e) {
-      let { name, updatedName, date, updatedDate, description, updatedDescription, url, updatedUrl, photoId } = this.state;   
-      if (updatedName !== ''){
-        name =  updatedName;
+      const { name, updatedName, date, updatedDate, description, updatedDescription, url, updatedUrl, photoId } = this.state;   
+      const updatedPhotoObj = {
+        name: checkIfUpdated(name, updatedName),
+        date: checkIfUpdated(date, updatedDate),
+        description: checkIfUpdated(description, updatedDescription),
+        url: checkIfUpdated(url, updatedUrl)
       }
-      if (updatedDate !== ''){
-        date = updatedDate 
-      }
-      if (updatedDescription){
-        description = updatedDescription;
-      }
-      if (updatedUrl !== null){
-        url =  updatedUrl;
-      }
-
-      axios.put('/photos', {
-          name,
-          date,
-          description,
-          url, 
-          photoId
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      axiosUpdatePhotoById(updatedPhotoObj, photoId, this.state.accessToken);
       this.props.refresh(photoId);
       this.handleClose();
     }
 
     handleDelete() {
-      axios.delete(`/photos/${this.state.photoId}`)
-        .then(res => {
-          console.log(res.data.payload);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      axiosDeletePhotoById(this.state.photoId, this.state.accessToken);
       this.props.refresh();
       this.handleClose();
     }

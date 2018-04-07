@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Panel, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { axiosGetAllPhotos } from '../../services/photoService';
 import Info from './Info';
-import axios from "axios";
 import styled from 'styled-components';
 
 class Tree extends Component {
   constructor(props){
     super(props);
     this.state = {
+      accessToken: '',
       photos: [],
       idOfPhotoToDisplay: ''
     }
@@ -16,13 +17,19 @@ class Tree extends Component {
   }
 
   componentWillReceiveProps(propsReceived) {
-    if (propsReceived.refresh){
-      this.handleRefresh(propsReceived.idOfPhotoToFeature);
+    if(propsReceived.accessToken){
+      this.setState({ 
+        accessToken: propsReceived.accessToken 
+      }, () => {
+        if (propsReceived.refresh){
+          // Case 1: New photo is added, view defaults to that photo
+          this.handleRefresh(propsReceived.idOfPhotoToFeature);
+        } else {
+          // Case 2: On page refresh, default to first photo
+          this.handleRefresh();
+        }
+      });
     }
-  }
-
-  componentDidMount() {
-    this.handleRefresh();
   }
 
   handleClick(id) {
@@ -30,27 +37,22 @@ class Tree extends Component {
   }
 
   handleRefresh(id){
-    axios.get("/photos")
-      .then(res => {
-        if(res.data.payload){
-          this.setState({ photos: res.data.payload });
-          if (id === undefined){
-            this.setState({ idOfPhotoToDisplay: res.data.payload[0]._id });
-          } else {
-            this.setState({ idOfPhotoToDisplay: id});
-          }
-          
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    axiosGetAllPhotos(this.state.accessToken, (res) => {
+      this.setState({ photos: res });
+      if (id){
+        // Case 1
+        this.setState({ idOfPhotoToDisplay: id });
+      } else {
+        // Case 2
+        this.setState({ idOfPhotoToDisplay: res[0]._id });
+      }
+    });
   }
   
   render() {
     return (
       <TreeContainer>
-        <Panel id='tree-panel'>
+        <Panel>
           <Panel.Heading>My Photos</Panel.Heading>
           <ListGroup>
             { this.state.photos.map((photo, i) => (
@@ -61,9 +63,10 @@ class Tree extends Component {
               ))}
           </ListGroup>
         </Panel>
-        
+
         <Info   
           id={this.state.idOfPhotoToDisplay}
+          accessToken={this.state.accessToken}
           refresh={this.handleRefresh}/>
       </TreeContainer>
     );
@@ -75,11 +78,11 @@ export default Tree;
 const TreeContainer = styled.div`
   display: flex;
   padding: 30px;
-  #tree-panel{
+  .panel{
     min-width: 200px;
     height: 100%;
   }
-  #tree-panel--heading{
+  .panel-heading{
     font-weight: bold;
   }
 `

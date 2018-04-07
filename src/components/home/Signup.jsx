@@ -94,4 +94,11 @@ export default Signup;
 const SignupContainer = styled.div`
   width: 500px;
   margin: 0 auto;
+  .panel-footer {
+    display: flex;
+    justify-content: center;
+  }
+  .btn-primary{
+    width: 30%;
+  }
 `

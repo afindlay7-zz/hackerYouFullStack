@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import {  Button, Modal, Form, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
-import axios from "axios";
+import { axiosAddPhoto } from '../../services/photoService';
 import styled from 'styled-components';
 
 class Banner extends Component {
   constructor(props){
     super(props);
     this.state = {
+      accessToken: '',
       show: false,
       name: '',
       date: '',
@@ -19,6 +20,12 @@ class Banner extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
+  }
+
+  componentWillReceiveProps(propsReceived) {
+    if (propsReceived.accessToken){
+      this.setState({ accessToken: propsReceived.accessToken });
+    }
   }
 
   handleClose() {
@@ -48,21 +55,16 @@ class Banner extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { name, date, description, url, file} = this.state;
-    axios.post('/photos', {
-        name,
-        date,
-        description,
-        url,
-        file
-      })
-      .then(res => {
-        console.log(res.data.payload);
-        this.props.refresh(res.data.payload._id);
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+    const newPhotoObj = {
+      name: this.state.name,
+      date: this.state.date,
+      description: this.state.description,
+      url: this.state.url,
+      file: this.state.file
+    }
+    axiosAddPhoto(newPhotoObj, this.state.accessToken, (res) => {
+      this.props.refresh(res._id);
+    });
     this.handleClose();
   }
 
