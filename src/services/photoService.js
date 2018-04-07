@@ -52,12 +52,11 @@ export function axiosGetPhotoById(id, authToken, callback){
 export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
     const options = getHeader(authToken);
 
-    axios.put('/photos', {
+    axios.put('/photos/' + id, {
             name: updatedPhoto.name,
             date: updatedPhoto.date,
             description: updatedPhoto.description,
             url: updatedPhoto.url, 
-            id: id
         }, options)
         .then(res => {
             console.log(res.data.payload);
