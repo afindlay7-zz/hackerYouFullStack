@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Banner from './Banner';
 import Tree from './Tree';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 class Dashboard extends Component {
   constructor(props){
@@ -29,7 +29,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>
+      <DashboardContainer>
         <Banner 
           refresh={this.handleRefresh}
           accessToken={this.state.accessToken}/>
@@ -38,9 +38,13 @@ class Dashboard extends Component {
           idOfPhotoToFeature={this.state.idOfNewPhoto}
           accessToken={this.state.accessToken}
           />
-      </div>
+      </DashboardContainer>
     );
   }
 }
   
 export default Dashboard;
+
+const DashboardContainer = styled.div`
+  min-height: calc(100vh - 100px);
+`

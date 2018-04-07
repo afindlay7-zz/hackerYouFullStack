@@ -27,11 +27,6 @@ class Footer extends Component {
   export default Footer;
 
   const FooterContainer = styled.div`
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-
     #navbar {
       margin: 0;
       height: 100px;

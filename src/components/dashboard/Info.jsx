@@ -3,7 +3,6 @@ import { Panel, Button, Modal, Form, FormGroup, FormControl, ControlLabel, Radio
 import { axiosGetPhotoById, axiosUpdatePhotoById, axiosDeletePhotoById } from '../../services/photoService';
 import styled from 'styled-components';
 import { checkIfUpdated } from '../../utils/helpers';
-import Preview from './Preview';
 
 class Info extends Component {
     constructor(props){
@@ -70,7 +69,7 @@ class Info extends Component {
       });
     }
 
-    handleEdit(e) {
+    handleEdit() {
       const { name, updatedName, date, updatedDate, description, updatedDescription, url, updatedUrl, photoId } = this.state;   
       const updatedPhotoObj = {
         name: checkIfUpdated(name, updatedName),
@@ -104,9 +103,9 @@ class Info extends Component {
               <p>{this.state.description}</p>
               <h3>Groups:</h3>
               { this.state.url ? 
-                <Preview url={this.state.url} alt={this.state.name} num="first"/> :
-                <Preview num="second"/>
-                }
+                <img src={this.state.url} alt={this.state.alt}></img>
+                : null
+              }
             </Panel.Body>
 
             <Panel.Footer id="info-panel-footer">
@@ -227,7 +226,12 @@ const InfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
   }
-
+  img {
+    max-width: 500px;
+    height: auto;
+    border: 2px solid #DDDDDD;
+    border-radius: 4px;
+  }
 
   @media(max-width: 1224px){
     display: block;
