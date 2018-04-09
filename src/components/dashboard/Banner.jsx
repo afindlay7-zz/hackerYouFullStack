@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {  Button, Modal, Form, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
-import { axiosAddPhoto } from '../../services/photoService';
 import styled from 'styled-components';
+import { axiosAddPhoto } from '../../services/photoService';
+import { getToken } from '../../services/tokenService';
 
 class Banner extends Component {
   constructor(props){
@@ -22,10 +23,9 @@ class Banner extends Component {
     this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
-  componentWillReceiveProps(propsReceived) {
-    if (propsReceived.accessToken){
-      this.setState({ accessToken: propsReceived.accessToken });
-    }
+  componentDidMount(){
+    const token = getToken();
+    this.setState({ accessToken: token });
   }
 
   handleClose() {

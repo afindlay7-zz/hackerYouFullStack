@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
 import { Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import axios from "axios";
 import styled from 'styled-components';
+import { axiosSignup } from '../../services/userService';
 
 class Signup extends Component {
   constructor(){
       super();
       this.state = {
-        redirectToDashboard: false,
         firstName: '',
         lastName: '',
         email: '',
@@ -27,18 +25,11 @@ class Signup extends Component {
   handleSubmit(){
     // TODO: Front-end validation
     const { firstName, lastName, email, password } = this.state;
-    axios.post('/auth/signup', {
-      firstName,
-      lastName,
-      email,
-      password
-    })
-      .then(res => {
-        this.setState({ redirectToDashboard: true });
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+
+    axiosSignup(firstName, lastName, email, password, (res) => {
+      const user = res;
+      this.props.setUser(user);
+    });
   }
   
   render() {
@@ -80,10 +71,6 @@ class Signup extends Component {
           </Panel.Footer>
         </Panel>
 
-        { this.state.redirectToDashboard ? 
-          <Redirect to={{pathname: '/dashboard'}} id='redirectToDashboardFromSignup' />
-          : null
-        }
       </SignupContainer>
     );
   }
@@ -94,6 +81,7 @@ export default Signup;
 const SignupContainer = styled.div`
   width: 500px;
   margin: 0 auto;
+  min-height: calc(100vh - 100px);
   .panel-footer {
     display: flex;
     justify-content: center;

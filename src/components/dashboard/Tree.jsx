@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Panel, ListGroup, ListGroupItem } from 'react-bootstrap';
-import { axiosGetAllPhotos } from '../../services/photoService';
-import Info from './Info';
 import styled from 'styled-components';
+import Info from './Info';
+import { axiosGetAllPhotos } from '../../services/photoService';
+import { getToken } from '../../services/tokenService';
 
 class Tree extends Component {
   constructor(props){
@@ -17,19 +18,22 @@ class Tree extends Component {
   }
 
   componentWillReceiveProps(propsReceived) {
-    if(propsReceived.accessToken){
-      this.setState({ 
-        accessToken: propsReceived.accessToken 
-      }, () => {
-        if (propsReceived.refresh){
-          // Case 1: New photo is added, view defaults to that photo
-          this.handleRefresh(propsReceived.idOfPhotoToFeature);
-        } else {
-          // Case 2: On page refresh, default to first photo
-          this.handleRefresh();
-        }
-      });
+    if (propsReceived.refresh){
+      // Case 1: New photo is added, view defaults to that photo
+      this.handleRefresh(propsReceived.idOfPhotoToFeature);
+    } else {
+      // Case 2: On page refresh, default to first photo
+      this.handleRefresh();
     }
+  }
+
+  componentDidMount(){
+    const token = getToken();
+    this.setState({ 
+      accessToken: token 
+    }, () => {
+      this.handleRefresh();
+    });
   }
 
   handleClick(id) {
@@ -66,7 +70,6 @@ class Tree extends Component {
 
         <Info   
           id={this.state.idOfPhotoToDisplay}
-          accessToken={this.state.accessToken}
           refresh={this.handleRefresh}/>
       </TreeContainer>
     );

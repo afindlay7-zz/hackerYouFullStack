@@ -14,12 +14,6 @@ class Dashboard extends Component {
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
-  componentDidMount() {
-    if (this.props.location.state){
-      this.setState({ accessToken: this.props.location.state.accessToken });
-    }
-  }
-
   handleRefresh(idOfPhotoAdded) {
     this.setState({ 
       onRefresh: true,
@@ -31,13 +25,10 @@ class Dashboard extends Component {
     return (
       <DashboardContainer>
         <Banner 
-          refresh={this.handleRefresh}
-          accessToken={this.state.accessToken}/>
+          refresh={this.handleRefresh}/>
         <Tree 
           refresh={this.state.onRefresh}
-          idOfPhotoToFeature={this.state.idOfNewPhoto}
-          accessToken={this.state.accessToken}
-          />
+          idOfPhotoToFeature={this.state.idOfNewPhoto}/>
       </DashboardContainer>
     );
   }
