@@ -24,7 +24,7 @@ class Login extends Component {
   handleSubmit(){
     const { email, password } = this.state;
     axiosLogin(email, password, (res) => {
-      this.props.getCurrentUser();
+      this.props.login();
     });
   }
   

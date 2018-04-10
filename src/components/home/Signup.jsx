@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
-import { axiosSignup } from '../../services/userService';
+import { axiosSignup, axiosLogin } from '../../services/userService';
 
 class Signup extends Component {
   constructor(){
@@ -23,12 +23,12 @@ class Signup extends Component {
   }
 
   handleSubmit(){
-    // TODO: Front-end validation
     const { firstName, lastName, email, password } = this.state;
 
     axiosSignup(firstName, lastName, email, password, (res) => {
-      const user = res;
-      this.props.setUser(user);
+      axiosLogin(email, password, (res) => {
+        this.props.login();
+      });
     });
   }
   

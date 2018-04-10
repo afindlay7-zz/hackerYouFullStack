@@ -42,11 +42,10 @@ class Header extends Component {
 
   handleLogout(){
     removeToken();
-    this.props.setUser(null);
+    this.props.logout();
     this.setState({ email: null})
   }
 
-  
   render() {
     return (
       <HeaderContainer>
@@ -56,12 +55,12 @@ class Header extends Component {
           </Navbar.Header>
           
             { this.state.email ?
-              <Nav>
-                <NavItem onClick={this.handleLogout}>{this.state.email}</NavItem>
+              <Nav pullRight>
+                <NavItem>{this.state.email}</NavItem>
                 <NavItem onClick={this.handleLogout}>Logout</NavItem>
               </Nav>
               : 
-              <Nav>
+              <Nav pullRight>
                 <NavItem onClick={this.redirectToLogin}>Login</NavItem>
                 <NavItem onClick={this.redirectToSignup}>Signup</NavItem>
               </Nav>

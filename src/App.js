@@ -9,25 +9,30 @@ import { axiosGetUser } from './services/userService';
 import { getToken } from './services/tokenService';
 
 class App extends Component {
-  state = {
-    user: null,
-    email: ''
-  };
+  constructor(){
+    super()
+    this.state = {
+      isLoggedIn: false,
+      email: ''
+    };
+    this.logout = this.logout.bind(this);
+    this.login = this.login.bind(this);
+  }
 
   componentDidMount(){
-    this.getCurrentUser();
+    this.login();
   }
 
-  setUser = (user) => {
-    this.setState({ user });
+  logout(){
+    this.setState({ isLoggedIn: false });
   }
 
-  getCurrentUser = () => {
+  login(){
     const token = getToken();
     if(token){
       axiosGetUser(token, (res) => {
         this.setState({ 
-          user: res, 
+          isLoggedIn: true, 
           email: res.email 
         });
       });
@@ -38,20 +43,20 @@ class App extends Component {
     return (
         <Router>
           <div>
-            <Header setUser={this.setUser} email={this.state.email}/>
+            <Header logout={this.logout} email={this.state.email}/>
             <Switch>
               <Route exact path='/login' render={ () => 
-                  this.state.user ? <Redirect to="/" /> : <Login getCurrentUser={this.getCurrentUser}/>
+                  this.state.isLoggedIn ? <Redirect to='/' /> : <Login login={this.login}/>
                 } 
               />
 
               <Route exact path='/signup' render={ () => 
-                  this.state.user ? <Redirect to='/' /> : <Signup setUser={this.setUser}/>
+                  this.state.isLoggedIn ? <Redirect to='/' /> : <Signup login={this.login}/>
                 } 
               />
 
               <Route path='/' render={ () => 
-                  this.state.user ? <Dashboard /> : <Redirect to='/login' />
+                  this.state.isLoggedIn ? <Dashboard /> : <Redirect to='/login' />
                 }
               />
               
