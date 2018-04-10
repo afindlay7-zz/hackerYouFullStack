@@ -8,7 +8,7 @@ class Header extends Component {
   constructor(){
     super();
     this.state = {
-      isLoggedIn: false,
+      email: null,
       redirectToLogin: false,
       redirectToSignup: false
     }
@@ -18,10 +18,10 @@ class Header extends Component {
   }
 
   componentWillReceiveProps(propsReceived){
-    if(propsReceived.refresh){
+    if(propsReceived.email){
       const token = getToken();
       if(token){
-        this.setState({ isLoggedIn: true })
+        this.setState({ email: propsReceived.email })
       }
     }
   }
@@ -43,22 +43,21 @@ class Header extends Component {
   handleLogout(){
     removeToken();
     this.props.setUser(null);
-    this.setState({ isLoggedIn: false})
+    this.setState({ email: null})
   }
 
   
   render() {
     return (
       <HeaderContainer>
-        <Navbar id='navbar'>
+        <Navbar>
           <Navbar.Header>
-            <Navbar.Brand>
-              <a href="#home">Photo-Share</a>
-            </Navbar.Brand>
+            <Navbar.Brand>Photo-Share</Navbar.Brand>
           </Navbar.Header>
           
-            { this.state.isLoggedIn ?
+            { this.state.email ?
               <Nav>
+                <NavItem onClick={this.handleLogout}>{this.state.email}</NavItem>
                 <NavItem onClick={this.handleLogout}>Logout</NavItem>
               </Nav>
               : 

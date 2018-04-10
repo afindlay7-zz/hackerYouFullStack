@@ -110,15 +110,6 @@ class Banner extends Component {
                 </FormControl>
               </FormGroup>
 
-              <FormGroup controlId="formControlsSelectMultiple">
-                <ControlLabel>Groups</ControlLabel>
-                <FormControl componentClass="select" multiple>
-                  <option value="select">G1</option>
-                  <option value="other">G2</option>
-                  <option value="other">G3</option>
-                </FormControl>
-              </FormGroup>
-
               <FormGroup>
                 <Radio name="radioGroup" inline>
                   <FormGroup controlId="formControlsText">

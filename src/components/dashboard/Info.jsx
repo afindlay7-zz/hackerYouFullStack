@@ -103,7 +103,6 @@ class Info extends Component {
             <p>{this.state.date}</p>
             <h3>Description:</h3>
             <p>{this.state.description}</p>
-            <h3>Groups:</h3>
             { this.state.url ? 
               <img src={this.state.url} alt={this.state.alt}></img>
               : null
@@ -148,15 +147,6 @@ class Info extends Component {
                       defaultValue={this.state.description}
                       name="updatedDescription" 
                       onChange={this.handleChange}>
-                    </FormControl>
-                  </FormGroup>
-
-                  <FormGroup controlId="formControlsSelectMultiple">
-                    <ControlLabel>Groups</ControlLabel>
-                    <FormControl componentClass="select" multiple>
-                      <option value="select">G1</option>
-                      <option value="other">G2</option>
-                      <option value="other">G3</option>
                     </FormControl>
                   </FormGroup>
 

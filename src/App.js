@@ -11,7 +11,7 @@ import { getToken } from './services/tokenService';
 class App extends Component {
   state = {
     user: null,
-    refresh: false
+    email: ''
   };
 
   componentDidMount(){
@@ -19,14 +19,17 @@ class App extends Component {
   }
 
   setUser = (user) => {
-    this.setState({ user: user });
+    this.setState({ user });
   }
 
   getCurrentUser = () => {
     const token = getToken();
     if(token){
       axiosGetUser(token, (res) => {
-        this.setState({ user: res, refresh: true });
+        this.setState({ 
+          user: res, 
+          email: res.email 
+        });
       });
     }
   }
@@ -35,7 +38,7 @@ class App extends Component {
     return (
         <Router>
           <div>
-            <Header setUser={this.setUser} refresh={this.state.refresh}/>
+            <Header setUser={this.setUser} email={this.state.email}/>
             <Switch>
               <Route exact path='/login' render={ () => 
                   this.state.user ? <Redirect to="/" /> : <Login getCurrentUser={this.getCurrentUser}/>
