@@ -21,7 +21,9 @@ class Info extends Component {
       url: '',
       updatedUrl: '',
       file: false,
-      photoId: ''
+      photoId: '',
+      updateNameError: false,
+      updatePhotoError: false
     }
     this.handleShowEditModal = this.handleShowEditModal.bind(this);
     this.handleShowDeleteModal = this.handleShowDeleteModal.bind(this);
@@ -50,28 +52,28 @@ class Info extends Component {
     this.setState({ accessToken: token });
   }
 
-  handleShowEditModal() {
+  handleShowEditModal(){
     this.setState({ showEditModal: true });
   }
 
-  handleShowDeleteModal() {
+  handleShowDeleteModal(){
     this.setState({ showDeleteModal: true });
   }
 
-  handleClose() {
+  handleClose(){
     this.setState({ 
       showEditModal: false,
       showDeleteModal: false,
     });
   }
 
-  handleChange(e) {
+  handleChange(e){
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  handleEdit() {
+  handleEdit(){
     const { name, updatedName, date, updatedDate, description, updatedDescription, url, updatedUrl, photoId } = this.state;   
     const updatedPhotoObj = {
       name: checkIfUpdated(name, updatedName),
@@ -84,7 +86,8 @@ class Info extends Component {
     this.handleClose();
   }
 
-  handleDelete() {
+  handleDelete(){
+    // ERROR Delete only auto-refreshes the second time you delete a photo
     axiosDeletePhotoById(this.state.photoId, this.state.accessToken);
     this.props.refresh();
     this.handleClose();
@@ -93,7 +96,7 @@ class Info extends Component {
   render() {
     return (
       <InfoContainer>
-        <Panel id='info-panel'>
+        <Panel>
           <Panel.Heading>
             <h2>{this.state.name}</h2>
           </Panel.Heading>
@@ -103,17 +106,14 @@ class Info extends Component {
             <p>{this.state.date}</p>
             <h3>Description:</h3>
             <p>{this.state.description}</p>
-            { this.state.url ? 
-              <img src={this.state.url} alt={this.state.alt}></img>
-              : null
-            }
+            { this.state.url ? <img src={this.state.url} alt={this.state.alt}></img> : null }
           </Panel.Body>
 
-          <Panel.Footer id="info-panel-footer">
+          <Panel.Footer>
             <Button bsStyle="primary" onClick={this.handleShowEditModal}>Edit</Button>
             <Button bsStyle="danger" onClick={this.handleShowDeleteModal}>Delete</Button>
 
-            <Modal show={this.state.showEditModal} onHide={this.handleClose}>
+            <ModalContainer show={this.state.showEditModal} onHide={this.handleClose}>
               <Form>
                 <Modal.Header closeButton>
                   <Modal.Title>Photo Information</Modal.Title>
@@ -129,6 +129,7 @@ class Info extends Component {
                       onChange={this.handleChange}>
                     </FormControl>
                   </FormGroup>
+                  { this.state.updateNameError ? <p className='validation-error'>Please give this photo a name!</p> : null }
 
                   <FormGroup controlId="formControlsText">
                     <ControlLabel>Date</ControlLabel>
@@ -173,6 +174,7 @@ class Info extends Component {
                         </FormControl>
                       </FormGroup>
                     </Radio>
+                    { this.state.updatePhotoError ? <p className='validation-error'>Please provide a link or upload a photo!</p> : null }
                   </FormGroup>
                 </Modal.Body>
 
@@ -181,16 +183,14 @@ class Info extends Component {
                   <Button onClick={this.handleClose}>Close</Button>
                 </Modal.Footer>
               </Form>
-            </Modal>
+            </ModalContainer>
             
             <Modal show={this.state.showDeleteModal} onHide={this.handleClose}>
               <Modal.Header closeButton>
                 <Modal.Title>Modal heading</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <p>
-                  Are you sure you want to delete this photo?
-                </p>
+                <p>Are you sure you want to delete this photo?</p>
               </Modal.Body>
               <Modal.Footer>
                 <Button onClick={this.handleClose}>No</Button>
@@ -211,15 +211,15 @@ const InfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 0 0 15px;
-  #info-panel {
+  .panel {
     margin: 0;
   }
-  #info-panel-footer {
+  .panel-footer {
     display: flex;
     justify-content: space-between;
   }
   img {
-    max-width: 500px;
+    width: 100%;
     height: auto;
     border: 2px solid #DDDDDD;
     border-radius: 4px;
@@ -227,5 +227,12 @@ const InfoContainer = styled.div`
 
   @media(max-width: 1224px){
     display: block;
+  }
+`
+
+const ModalContainer = styled(Modal)`
+  .validation-error{
+    color: red;
+    font-style: italic;
   }
 `

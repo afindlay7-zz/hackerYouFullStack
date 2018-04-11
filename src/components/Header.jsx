@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import styled from 'styled-components';
 import { getToken, removeToken } from '../services/tokenService';
@@ -65,6 +65,9 @@ class Header extends Component {
                 <NavItem onClick={this.redirectToSignup}>Signup</NavItem>
               </Nav>
             }
+            
+            { this.state.redirectToLogin ? <Redirect to='/login' /> : null }
+            { this.state.redirectToSignup ? <Redirect to='/signup' /> : null }
         </Navbar>
       </HeaderContainer>
     );

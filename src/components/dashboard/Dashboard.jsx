@@ -37,5 +37,5 @@ class Dashboard extends Component {
 export default Dashboard;
 
 const DashboardContainer = styled.div`
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 100px);
 `
