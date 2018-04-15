@@ -92,7 +92,9 @@ class Banner extends Component {
       file: this.state.file
     }
     axiosAddPhoto(newPhotoObj, this.state.accessToken, (res) => {
-      this.props.refresh(res._id);
+      if (res){
+        this.props.refresh(res._id);
+      }
     });
     this.handleClose();
   }
@@ -141,7 +143,7 @@ class Banner extends Component {
               </FormGroup>
 
               <FormGroup>
-                <Radio name="radioGroup" inline>
+                <Radio name="radioGroup" inline defaultChecked>
                   <FormGroup controlId="formControlsText">
                     <ControlLabel>URL</ControlLabel>
                     <FormControl 

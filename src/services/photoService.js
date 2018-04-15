@@ -23,7 +23,6 @@ export function axiosAddPhoto(newPhoto, authToken, callback){
 }
 
 export function axiosGetAllPhotos(authToken, callback){
-  console.log('authToken' + authToken);
   const options = getHeader(authToken);
 
   axios.get('/photo/photos', options)
