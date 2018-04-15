@@ -157,7 +157,7 @@ class Info extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <Radio name="radioGroup" inline>
+                    <Radio name="radioGroup" inline defaultChecked>
                       <FormGroup controlId="formControlsText">
                         <ControlLabel>URL</ControlLabel>
                         <FormControl 
