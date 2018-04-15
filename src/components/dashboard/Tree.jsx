@@ -41,8 +41,10 @@ class Tree extends Component {
   }
 
   handleRefresh(id){
+    console.log('handle refresh');
     axiosGetAllPhotos(this.state.accessToken, (res) => {
-      this.setState({ photos: res });
+      this.setState({ photos: res }, () => console.log(this.state.photos));
+
       if (id){
         // Case 1
         this.setState({ idOfPhotoToDisplay: id });

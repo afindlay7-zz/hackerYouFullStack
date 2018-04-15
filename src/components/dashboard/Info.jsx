@@ -81,16 +81,21 @@ class Info extends Component {
       description: checkIfUpdated(description, updatedDescription),
       url: checkIfUpdated(url, updatedUrl)
     }
-    axiosUpdatePhotoById(updatedPhotoObj, photoId, this.state.accessToken);
-    this.props.refresh(photoId);
-    this.handleClose();
+    axiosUpdatePhotoById(updatedPhotoObj, photoId, this.state.accessToken, (res) => {
+      if (res){
+        this.props.refresh(photoId);
+        this.handleClose();
+      }
+    });
   }
 
   handleDelete(){
-    // ERROR Delete only auto-refreshes the second time you delete a photo
-    axiosDeletePhotoById(this.state.photoId, this.state.accessToken);
-    this.props.refresh();
-    this.handleClose();
+    axiosDeletePhotoById(this.state.photoId, this.state.accessToken, (res) => {
+      if (res){
+        this.props.refresh();
+        this.handleClose();
+      }
+    });
   }
   
   render() {

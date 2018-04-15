@@ -53,7 +53,7 @@ export function axiosGetPhotoById(id, authToken, callback){
     });
 }
 
-export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
+export function axiosUpdatePhotoById(updatedPhoto, id, authToken, callback){
     const options = getHeader(authToken);
 
     axios.put('/photo/photos/' + id, {
@@ -65,6 +65,7 @@ export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
     .then(res => {
       if(isResponseSuccessful(res.status)){
         console.log(res.data.payload);
+        callback(true);
       } 
     })
     .catch(err => {
@@ -72,13 +73,14 @@ export function axiosUpdatePhotoById(updatedPhoto, id, authToken){
     });
 }
 
-export function axiosDeletePhotoById(id, authToken){
+export function axiosDeletePhotoById(id, authToken, callback){
   const options = getHeader(authToken);
 
   axios.delete('/photo/photos/' + id, options)
     .then(res => {
       if(isResponseSuccessful(res.status)){
         console.log(res.data.payload);
+        callback(true);
       } 
     })
     .catch(err => {
